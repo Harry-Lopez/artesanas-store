@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: artesaniasApp_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ArTeSaNiAs23
+      MYSQL_DATABASE: artesaniasApp_store
+      MYSQL_USER: api_user
+      MYSQL_PASSWORD: ArTeSaNiAs23
+    ports:
+      - "3308:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: ./backend
+    container_name: artesaniasApp_backend
+    restart: always
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql+pymysql://api_user:ArTeSaNiAs23@db:3306/artesaniasApp_store
+
+  frontend:
+    build: ./frontend
+    container_name: artesaniasApp_frontend
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
+
+networks:
+  default:
+    name: artesaniasApp_network
