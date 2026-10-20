@@ -1,13 +1,32 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+// Definimos la interfaz del producto para mantener un código limpio y seguro
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image_url?: string;
+  stock?: number;
+  status?: string;
+}
+
 export default function Home() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch('/api/v1/products')
+    fetch('/api/v1/products', {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      }
+    })
       .then(res => res.json())
-      .then(data => setProducts(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setProducts(data);
+        }
+      })
       .catch(err => console.error("Error al cargar el catálogo:", err));
   }, []);
 
@@ -20,9 +39,9 @@ export default function Home() {
           </h1>
           <p className="text-lg text-gray-600">Catálogo de artesanías y productos regionales.</p>
         </header>
-
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product: any) => (
+          {products.map((product) => (
             <article key={product.id} className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
               <div className="h-52 bg-gray-100 w-full relative overflow-hidden">
                 {product.image_url ? (
