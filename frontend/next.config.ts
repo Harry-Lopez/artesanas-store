@@ -1,17 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
+  // Autorizar peticion del dominio ngrok para no bloquearnos con CORS/HMR
+  allowedDevOrigins: ['ramrod-robin-buffoon.ngrok-free.dev'],
 };
 
 export default nextConfig;
