@@ -50,7 +50,8 @@ def get_products(db: Session = Depends(get_db)):
 # 3. Endpoint POST: Permite al seeder.py inyectar nuevos productos
 @app.post("/api/v1/products", status_code=201)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
-    db_product = Product(**product.dict())
+    # Usamos model_dump() en lugar de .dict() para Pydantic v2
+    db_product = Product(**product.model_dump())
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
