@@ -9,7 +9,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Artesanas Papantla API", version="0.1.0")
 
-# Política CORS, permite peticiones desde cualquier origen en desarrollo
+# <<--CORS:peticiones desde cualquier origen en desarrollo-->>
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
@@ -20,7 +20,11 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "system": "Artesanas Papantla API", "version": "0.1.0"}
+    return {
+             "status": "online",
+             "system": "Artesanas Papantla API", 
+             "version": "0.1.0"
+            }
 
 @app.get("/api/v1/categories")
 def get_categories(db: Session = Depends(get_db)):
