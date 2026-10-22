@@ -48,10 +48,29 @@ def get_products(db: Session = Depends(get_db)):
     return db.query(Product).all()
 
 # 3. Endpoint POST: Permite al seeder.py inyectar nuevos productos
-@app.post("/api/v1/products", status_code=201)
+"""@app.post("/api/v1/products", status_code=201)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
     # Usamos model_dump() en lugar de .dict() para Pydantic v2
     db_product = Product(**product.model_dump())
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+    """
+
+@app.post("/api/v1/products", status_code=201)
+def create_product(product: ProductCreate, db: Session = Depends(get_db)):
+    product_data = product.model_dump()
+    
+    # Generación automática de slug seguro
+    slug_base = product.name.lower().replace(" ", "-")
+    reemplazos = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"), ("ñ", "n"))
+    for a, b in reemplazos:
+        slug_base = slug_base.replace(a, b)
+    
+    product_data["slug"] = slug_base
+    
+    db_product = Product(**product_data)
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
