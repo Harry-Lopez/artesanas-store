@@ -78,7 +78,7 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    // 1. Fetch de productos
+    // <<--Fetch de productos-->>
     fetch('/api/v1/products', {
       headers: { 'ngrok-skip-browser-warning': 'true' }
     })
@@ -88,7 +88,7 @@ export default function Home() {
       })
       .catch(err => console.error("Error al cargar el catálogo:", err));
 
-    // 2. Motor del Carrusel (Cambia cada 5 segundos)
+    // <<--Motor del Carrusel (Cada 5s)-->>
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
     }, 5000);
@@ -102,14 +102,14 @@ export default function Home() {
   const scrollContainer = (id: string, direction: 'left' | 'right') => {
     const container = document.getElementById(`scroll-${id}`);
     if (container) {
-      const scrollAmount = direction === 'left' ? -600 : 600; // Avanza ~2 tarjetas por clic
+      const scrollAmount = direction === 'left' ? -600 : 600;
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
   return (
     // <<--Fondo General-->>
-    <main className="min-h-screen bg-[#F6F2EB] font-sans pb-12 overflow-x-hidden">
+    <main className="min-h-screen bg-[#F6F2EB] font-sans overflow-x-hidden">
       
       {/* <<-- OVERLAY OSCURO DEL MENÚ (Se activa al abrir) -->> */}
       {isMenuOpen && (
@@ -318,7 +318,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. CATÁLOGO POR CATEGORÍAS */}
+      {/*<<--CATÁLOGO POR CATEGORÍAS-->>*/}
       <section className="max-w-[1400px] w-full mx-auto px-4 mt-12">
         
         {categoriasData.map((categoria) => {
@@ -438,7 +438,7 @@ export default function Home() {
         })}
       </section>
 
-      {/* <<-- FOOTER TIPO CORPORATIVO -->> */}
+      {/*<<--FOOTER-->>*/}
       <footer className="bg-[#1A0F0A] text-white pt-12 pb-8 mt-12 border-t-4 border-[#DF6F27]">
         <div className="max-w-[1200px] mx-auto px-4">
           
@@ -460,10 +460,9 @@ export default function Home() {
             <div>
               <h3 className="font-bold text-lg mb-4 text-[#F6F2EB]">Impulsa tu arte</h3>
               <ul className="space-y-3 text-sm text-gray-300 font-light">
-                <li><a href="#" className="hover:underline hover:text-white">Vender en ArtesAna</a></li>
-                <li><a href="#" className="hover:underline hover:text-white">Protege tu herencia cultural</a></li>
-                <li><a href="#" className="hover:underline hover:text-white">Centro de artesanos</a></li>
-                <li><a href="#" className="hover:underline hover:text-white">Envíos y logística local</a></li>
+                <li><a href="#" className="hover:underline hover:text-white">Vender en ArtesAna</a></li> {/*Cómo puedes vender tus productos*/}
+              <li><a href="#" className="hover:underline hover:text-white">Centro de artesanos</a></li> {/*Personas que se han usmado y venden sus productos*/}
+                <li><a href="#" className="hover:underline hover:text-white">Envíos y logística local</a></li> {/*Cómo se envían y cómo gestionamos los pedidos*/}
               </ul>
             </div>
 
@@ -485,7 +484,6 @@ export default function Home() {
                 <li><a href="#" className="hover:underline hover:text-white">Tarjetas de crédito y débito</a></li>
                 <li><a href="#" className="hover:underline hover:text-white">Pago en tiendas OXXO</a></li>
                 <li><a href="#" className="hover:underline hover:text-white">Mercado Pago</a></li>
-                <li><a href="#" className="hover:underline hover:text-white">Transferencia SPEI</a></li>
               </ul>
             </div>
             
