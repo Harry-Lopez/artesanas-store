@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { HomeIcon, Bell, ShoppingBag, Heart, Tag, Store } from 'lucide-react';
 
 interface Product {
   id: number;
@@ -144,26 +145,32 @@ export default function Home() {
         
         {/*<<--Lista del menú-->>*/}
         <nav className="flex flex-col py-2 text-[#2C1A12] font-medium overflow-y-auto flex-1 bg-[#FDFBF7]">
-          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
-            <span className="text-2xl w-8 text-center opacity-80">🏠</span> <span className="text-[15px]">Inicio</span>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors group">
+            <HomeIcon className="w-5 h-5 text-[#8C6246] group-hover:text-[#DF6F27] transition-colors" />
+            <span className="text-[15px]">Inicio</span>
           </a>
-          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
-            <span className="text-2xl w-8 text-center opacity-80">🔔</span> <span className="text-[15px]">Notificaciones</span>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors group">
+            <Bell className="w-5 h-5 text-[#8C6246] group-hover:text-[#DF6F27] transition-colors" />
+            <span className="text-[15px]">Notificaciones</span>
           </a>
-          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
-            <span className="text-2xl w-8 text-center opacity-80">🛍️</span> <span className="text-[15px]">Mis compras</span>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors group">
+            <ShoppingBag className="w-5 h-5 text-[#8C6246] group-hover:text-[#DF6F27] transition-colors" />
+            <span className="text-[15px]">Mis compras</span>
           </a>
           
           <div className="border-t border-[#E8E0D5] my-2 mx-4"></div>
           
-          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
-            <span className="text-2xl w-8 text-center opacity-80">❤️</span> <span className="text-[15px]">Favoritos</span>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors group">
+            <Heart className="w-5 h-5 text-[#8C6246] group-hover:text-[#DF6F27] transition-colors" />
+            <span className="text-[15px]">Favoritos</span>
           </a>
-          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
-            <span className="text-2xl w-8 text-center opacity-80">🏷️</span> <span className="text-[15px]">Ofertas</span>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors group">
+            <Tag className="w-5 h-5 text-[#8C6246] group-hover:text-[#DF6F27] transition-colors" />
+            <span className="text-[15px]">Ofertas</span>
           </a>
-          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
-            <span className="text-2xl w-8 text-center opacity-80">📦</span> <span className="text-[15px]">Vender</span>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors group">
+            <Store className="w-5 h-5 text-[#8C6246] group-hover:text-[#DF6F27] transition-colors" />
+            <span className="text-[15px]">Vender</span>
           </a>
         </nav>
       </div>
