@@ -15,6 +15,10 @@ interface Product {
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // <<--Variables Dinámicas-->>
+  const [userName, setUserName] = useState<string | null>("Enrique"); 
+  const [cartItemCount, setCartItemCount] = useState<number>(2);
 
   // <<--Estado y Datos del Mini-Carrusel Promocional-->>
   const [currentPromo, setCurrentPromo] = useState(0);
@@ -104,63 +108,131 @@ export default function Home() {
 
   return (
     // <<--Fondo General-->>
-    <main className="min-h-screen bg-[#F6F2EB] font-sans pb-12">
+    <main className="min-h-screen bg-[#F6F2EB] font-sans pb-12 overflow-x-hidden">
       
-      {/* <<--HEADER: Fijo con sticky top-0 z-50-->>*/}
-      <header className="bg-[#2C1A12] sticky top-0 z-50 py-4 shadow-md">
+      {/* <<-- OVERLAY OSCURO DEL MENÚ (Se activa al abrir) -->> */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/70 z-[60] transition-opacity md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* <<-- MENÚ LATERAL TIPO APP (DRAWER) -->> */}
+      <div className={`fixed top-0 left-0 h-full w-[85%] max-w-[320px] bg-white z-[70] transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} shadow-2xl`}>
         
-        {/*<<--Fila principal del buscador-->>*/}
-        {/* Quitamos el contenedor interno extra. Ahora Logo, Buscador y Píldora son hermanos directos */}
-        <div className="max-w-[1400px] w-full mx-auto px-4 flex items-center justify-between gap-6">
+        {/*<<--Cabecera del Menú Desplegable-->>*/}
+        <div className="bg-[#DF6F27] p-5 text-white flex-shrink-0">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 bg-white text-[#DF6F27] rounded-full flex items-center justify-center font-bold text-2xl shadow-inner uppercase">
+              {userName ? userName.substring(0, 2) : "IN"}
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-xl leading-tight">{userName || "Invitado"}</h2>
+              <span className="text-sm font-light flex items-center gap-1 cursor-pointer hover:underline">
+                {userName ? "Mi perfil" : "Iniciar sesión"} <span>›</span>
+              </span>
+            </div>
+          </div>
           
-          {/* 1. Logo a la izquierda (flex-shrink-0 para que no se aplaste, ancho fijo aproximado de 200px para balancear) */}
-          <div className="flex items-center gap-3 flex-shrink-0 w-auto lg:w-[220px]">
-            <img src="/logo.png" alt="Artes Ana Logo" className="h-10 w-10 object-contain rounded-full border border-[#DF6F27]" />
-            <h1 className="text-2xl font-serif font-bold text-[#F6F2EB] tracking-wide hidden sm:block">
+          {/* Banner de Fidelidad */}
+          <div className="bg-[#2C1A12] rounded-md py-2.5 px-4 text-xs font-bold flex justify-between items-center cursor-pointer hover:bg-[#1a0f0a] transition-colors shadow-md">
+            <span>ArtesAna+ <span className="font-normal text-gray-300">Vive el arte como un experto</span></span>
+            <span className="text-lg">›</span>
+          </div>
+        </div>
+        
+        {/*<<--Lista del menú-->>*/}
+        <nav className="flex flex-col py-2 text-[#2C1A12] font-medium overflow-y-auto flex-1 bg-[#FDFBF7]">
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
+            <span className="text-2xl w-8 text-center opacity-80">🏠</span> <span className="text-[15px]">Inicio</span>
+          </a>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
+            <span className="text-2xl w-8 text-center opacity-80">🔔</span> <span className="text-[15px]">Notificaciones</span>
+          </a>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
+            <span className="text-2xl w-8 text-center opacity-80">🛍️</span> <span className="text-[15px]">Mis compras</span>
+          </a>
+          
+          <div className="border-t border-[#E8E0D5] my-2 mx-4"></div>
+          
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
+            <span className="text-2xl w-8 text-center opacity-80">❤️</span> <span className="text-[15px]">Favoritos</span>
+          </a>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
+            <span className="text-2xl w-8 text-center opacity-80">🏷️</span> <span className="text-[15px]">Ofertas</span>
+          </a>
+          <a href="#" className="flex items-center gap-4 px-6 py-3.5 hover:bg-[#F6F2EB] transition-colors">
+            <span className="text-2xl w-8 text-center opacity-80">📦</span> <span className="text-[15px]">Vender</span>
+          </a>
+        </nav>
+      </div>
+
+      {/* <<--HEADER: Fijo con sticky top-0 z-50-->>*/}
+      <header className="bg-[#2C1A12] sticky top-0 z-50 py-3 shadow-md">
+        
+        <div className="max-w-[1400px] w-full mx-auto px-4 flex items-center justify-between gap-3 md:gap-6">
+          
+          {/* Botón Hamburguesa (SOLO MÓVIL) */}
+          <button 
+            onClick={() => setIsMenuOpen(true)}
+            className="md:hidden text-[#F6F2EB] text-3xl flex-shrink-0 hover:text-[#DF6F27] transition-colors"
+          >
+            ≡
+          </button>
+
+          {/* Logo (Icono en móvil, completo en PC) */}
+          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0 w-auto lg:w-[220px]">
+            <img src="/logo.png" alt="ArtesAna Logo" className="h-9 w-9 md:h-10 md:w-10 object-contain rounded-full border border-[#DF6F27]" />
+            <h1 className="text-xl md:text-2xl font-serif font-bold text-[#F6F2EB] tracking-wide hidden sm:block">
               ARTES<span className="text-[#DF6F27]">ANA</span>
             </h1>
           </div>
           
-          {/* 2. Barra de búsqueda (flex-1 para absorber espacio, max-w-2xl para que no sea inmensa) */}
+          {/* Barra de Búsqueda */}
           <div className="flex-1 w-full max-w-2xl bg-white shadow-inner rounded-sm overflow-hidden h-10 border border-[#4A3224] flex">
             <input 
               type="text" 
-              placeholder="Buscar textiles, barro, madera..." 
-              className="w-full px-4 text-slate-700 outline-none placeholder-gray-400 font-light"
+              placeholder="Estoy buscando..." 
+              className="w-full px-3 md:px-4 text-slate-700 outline-none placeholder-gray-400 font-light text-sm md:text-base"
             />
-            <button className="px-5 bg-[#F6F2EB] text-[#2C1A12] hover:bg-[#DF6F27] hover:text-white transition-colors border-l border-gray-200">
+            <button className="px-3 md:px-5 bg-[#F6F2EB] text-[#2C1A12] hover:bg-[#DF6F27] hover:text-white transition-colors border-l border-gray-200">
               🔍
             </button>
           </div>
-        
-          {/* 3. Píldora Promocional (Micro-Carrusel Dinámico) */}
-          <div className="hidden md:flex relative h-10 rounded-full cursor-pointer flex-shrink-0 shadow-sm w-auto lg:w-[220px] overflow-hidden bg-[#2C1A12] border border-[#DF6F27]/50 group">
-            {/* Pista de deslizamiento */}
-            <div 
-              className="w-full h-full flex transition-transform duration-700 ease-in-out"
-              style={{ transform: `translateX(-${currentPromo * 100}%)` }}
-            >
-              {miniPromos.map((promo, index) => (
-                <div key={index} className="min-w-full h-full relative">
-                  {/* Imagen de la promo (debe ser alargada, aprox 220x40 px para que no se deforme) */}
-                  <img 
-                    src={promo} 
-                    alt={`Promo Especial ${index + 1}`} 
-                    className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80" 
-                  />
-                  {/* Fallback visual: Si la imagen no carga, se mostrará un fondo de color */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#DF6F27]/20 to-transparent mix-blend-overlay"></div>
-                </div>
-              ))}
-            </div>
+          
+          {/* Carrito de Compras (Móvil y PC) */}
+          <div className="flex items-center gap-4 flex-shrink-0">
+            <button className="text-[#F6F2EB] text-2xl relative hover:scale-110 transition-transform">
+              🛒
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-2 bg-[#DF6F27] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
 
+            {/* Píldora Promo (SOLO PC) */}
+            <div className="hidden md:flex relative h-10 rounded-full cursor-pointer shadow-sm w-[220px] overflow-hidden bg-[#2C1A12] border border-[#DF6F27]/50 group">
+              <div 
+                className="w-full h-full flex transition-transform duration-700 ease-in-out"
+                style={{ transform: `translateX(-${currentPromo * 100}%)` }}
+              >
+                {miniPromos.map((promo, index) => (
+                  <div key={index} className="min-w-full h-full relative">
+                    <img src={promo} alt="Promo" className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#DF6F27]/20 to-transparent mix-blend-overlay"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/*<<--Fila secundaria del menú-->>*/}
-        <div className="max-w-[1400px] mx-auto px-4 py-2 mt-2 border-t border-[#4A3224] flex items-center justify-between text-sm text-[#F6F2EB]/90">
+        {/* Fila Secundaria del Menú (SOLO PC) */}
+        <div className="hidden lg:flex max-w-[1400px] mx-auto px-4 py-2 mt-2 border-t border-[#4A3224] items-center justify-between text-sm text-[#F6F2EB]/90">
           <nav className="flex gap-6">
-            <button className="hover:text-white font-medium flex items-center gap-1">Categorías <span className="text-xs">▼</span></button>
+            <button className="hover:text-white font-medium flex items-center gap-1">Categorías <span className="text-[10px]">▼</span></button>
             <a href="#" className="hover:text-white transition-colors">Ofertas</a>
             <a href="#" className="hover:text-white transition-colors">Historial</a>
             <a href="#" className="hover:text-white transition-colors">Vender</a>
@@ -211,16 +283,16 @@ export default function Home() {
       {/*<<--TARJETAS DINÁMICAS (SCROLL HORIZONTAL)-->>*/}
       <section className="max-w-[1400px] w-full mx-auto px-4 mt-6">
         {/* Contenedor principal con desbordamiento controlado, imantación (snap) y ocultamiento de barra */}
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="flex gap-4 md:justify-center overflow-x-auto snap-x snap-mandatory pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           
           {curiosidades.map((item) => (
             <article 
               key={item.id} 
-              className={`${item.color} min-w-[280px] md:min-w-[320px] rounded-xl p-6 text-[#F6F2EB] shadow-md snap-start flex-shrink-0 hover:scale-[1.02] transition-transform duration-300 cursor-pointer border border-white/10`}
+              className={`${item.color} w-[150px] h-[220px] md:w-[180px] md:h-[260px] rounded-xl p-3 md:p-4 text-[#F6F2EB] shadow-md snap-start flex-shrink-0 hover:scale-[1.03] transition-transform duration-300 cursor-pointer border border-white/20 flex flex-col justify-center items-center text-center`}
             >
-              <div className="text-3xl mb-3">{item.icono}</div>
-              <h3 className="font-bold text-lg mb-2 tracking-wide">{item.titulo}</h3>
-              <p className="text-sm text-white/80 leading-relaxed font-light">
+              <div className="text-4xl md:text-5xl mb-3 drop-shadow-lg">{item.icono}</div>
+              <h3 className="font-bold text-sm md:text-base mb-2 tracking-wide leading-tight">{item.titulo}</h3>
+              <p className="text-[10px] md:text-xs text-white/90 leading-tight font-light line-clamp-3">
                 {item.texto}
               </p>
             </article>
