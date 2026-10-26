@@ -42,11 +42,11 @@ export default function Home() {
 
   // <<--Tarjetas Dinámicas de Curiosidades-->>
   const curiosidades = [
-    { id: 1, titulo: "Origen de la Vainilla", texto: "Papantla es la ciudad que dio la vainilla al mundo. Descubre su magia.", icono: "🌼", color: "bg-[#4A3224]" },
-    { id: 2, titulo: "Voladores de Papantla", texto: "Patrimonio Cultural Inmaterial de la Humanidad. Orgullo totonaca.", icono: "🦅", color: "bg-[#DF6F27]" },
-    { id: 3, titulo: "Herencia Totonaca", texto: "Nuestros artesanos preservan técnicas milenarias en cada pieza.", icono: "🏺", color: "bg-[#8C6246]" },
-    { id: 4, titulo: "Comercio Justo", texto: "El 100% de tu compra apoya directamente a las familias locales.", icono: "🤝", color: "bg-[#5C4537]" },
-    { id: 5, titulo: "Materiales Puros", texto: "Extraídos responsablemente de la región del Totonacapan.", icono: "🌿", color: "bg-[#2C1A12]" }
+    { id: 1, titulo: "Origen de la Vainilla", texto: "Papantla es la ciudad que dio la vainilla al mundo. Descubre su magia.", icono: "/icono-vainilla.png", color: "bg-[#4A3224]" },
+    { id: 2, titulo: "Voladores de Papantla", texto: "Patrimonio Cultural Inmaterial de la Humanidad. Orgullo totonaca.", icono: "/icono-volador.png", color: "bg-[#DF6F27]" },
+    { id: 3, titulo: "Herencia Totonaca", texto: "Nuestros artesanos preservan técnicas milenarias en cada pieza.", icono: "/icono-vasija.png", color: "bg-[#8C6246]" },
+    { id: 4, titulo: "Comercio Justo", texto: "El 100% de tu compra apoya directamente a las familias locales.", icono: "icono-manos.png", color: "bg-[#5C4537]" },
+    { id: 5, titulo: "Materiales Puros", texto: "Extraídos responsablemente de la región del Totonacapan.", icono: "/icono-hojas.png", color: "bg-[#2C1A12]" }
   ];
 
   // <<--Metadatos de Categorías de Banners-->>
@@ -138,7 +138,7 @@ export default function Home() {
           
           {/* Banner de Fidelidad */}
           <div className="bg-[#2C1A12] rounded-md py-2.5 px-4 text-xs font-bold flex justify-between items-center cursor-pointer hover:bg-[#1a0f0a] transition-colors shadow-md">
-            <span>ArtesAna+ <span className="font-normal text-gray-300">Vive el arte como un experto</span></span>
+            <span>ArtesAna <span className="font-normal text-gray-300">El renacer de nuestras raices</span></span>
             <span className="text-lg">›</span>
           </div>
         </div>
@@ -297,7 +297,17 @@ export default function Home() {
               key={item.id} 
               className={`${item.color} w-[150px] h-[220px] md:w-[180px] md:h-[260px] rounded-xl p-3 md:p-4 text-[#F6F2EB] shadow-md snap-start flex-shrink-0 hover:scale-[1.03] transition-transform duration-300 cursor-pointer border border-white/20 flex flex-col justify-center items-center text-center`}
             >
-              <div className="text-4xl md:text-5xl mb-3 drop-shadow-lg">{item.icono}</div>
+              <div className="w-12 h-12 md:w-16 md:h-16 mb-3 drop-shadow-lg flex-shrink-0">
+                <img 
+                  src={item.icono} 
+                  alt={item.titulo} 
+                  className="w-full h-full object-contain filter drop-shadow-md"
+                  onError={(e) => {
+                    // <<--Fallback si la imagen no existe-->>
+                    (e.target as HTMLImageElement).src = '/logo.png'; 
+                  }}
+                />
+              </div>
               <h3 className="font-bold text-sm md:text-base mb-2 tracking-wide leading-tight">{item.titulo}</h3>
               <p className="text-[10px] md:text-xs text-white/90 leading-tight font-light line-clamp-3">
                 {item.texto}
